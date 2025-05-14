@@ -1,0 +1,63 @@
+# Step 1: Import Required Libraries
+import pandas as pd
+import numpy as np
+import re
+import string
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
+
+
+# Step 2: Create or Load Dataset
+# Sample customer reviews
+data = {
+    'review': [
+        "I love this product! It’s amazing.",
+        "Worst purchase ever. Completely disappointed.",
+        "Very satisfied. Highly recommend to others.",
+        "Not worth the price.",
+        "Absolutely fantastic. Exceeded expectations!",
+        "Terrible. Would not buy again.",
+        "Great value for money.",
+        "It's okay, not the best but not the worst.",
+        "Broke after a week. Waste of money.",
+        "Excellent build quality and performance."
+    ],
+    'sentiment': [1, 0, 1, 0, 1, 0, 1, 1, 0, 1]
+}
+
+df = pd.DataFrame(data)
+
+
+# Step 3: Preprocessing the Text
+def clean_text(text):
+    text = text.lower()  # lowercase
+    text = re.sub(r"[^\w\s]", '', text)  # remove punctuation
+    text = re.sub(r"\s+", ' ', text).strip()  # remove extra whitespace
+    return text
+
+df['cleaned_review'] = df['review'].apply(clean_text)
+
+
+#  Step 4: Convert Text to TF-IDF Vectors
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(df['cleaned_review'])
+y = df['sentiment']
+
+
+#  Step 5: Split Dataset
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+
+# Step 6: Train Logistic Regression Model
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+
+# Step 7: Evaluate the Model
+y_pred = model.predict(X_test)
+
+print("Accuracy Score:", accuracy_score(y_test, y_pred))
+print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_pred))
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
