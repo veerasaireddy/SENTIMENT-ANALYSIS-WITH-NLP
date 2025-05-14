@@ -51,3 +51,8 @@ Model evaluation using multiple metrics
 Commentary and analysis of results
 
 This task builds foundational skills in NLP, machine learning, and model evaluation — all of which are essential for aspiring data scientists.
+
+
+## OUTPUT  :
+
+<img width="1034" alt="Image" src="https://github.com/user-attachments/assets/57048891-695d-4135-83d2-063f966b19a9" />
